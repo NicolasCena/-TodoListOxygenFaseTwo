@@ -24,13 +24,13 @@ export const SectionTodo = () => {
     } , [])
 
   return (
-    <>
+    <>d
     {
       state.flag ? <Loading /> :
       (<>
         {
           
-          ((state.todo.length && state.todoDone.length) > 0) ?
+          ((state.todo.length || state.todoDone.length) > 0) ?
           (
           <div className="container">
             <div className="row">
