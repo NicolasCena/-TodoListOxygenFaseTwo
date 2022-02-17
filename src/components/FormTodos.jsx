@@ -1,14 +1,20 @@
-import React,{ useState } from 'react';
+import React,{ useState, useContext } from 'react';
+import { ADD_TODO } from '../context/actions';
+import { AppContext } from "../context/AppProvider";
 
-//STYLES
-import "../styles/formTodos.css";
+//Components
+import { Tag } from './Tag'
 
-export const FormTodos = ({ todos, setTodos}) => {
+
+export const FormTodos = () => {
+    const {  dispatch } = useContext(AppContext);
+
 
     const [DescriptionTodo, setDescriptionTodo] = useState('');
+    const [TagTodoList, setTagTodoList] = useState([]);
     const [TagTodo, setTagTodo] = useState('');
     const [TitleTodo, setTitleTodo] = useState('');
-    
+    const [TagColor, setTagColor] = useState('');
 
     
     const onSubmit = (e) => {
@@ -17,46 +23,85 @@ export const FormTodos = ({ todos, setTodos}) => {
             id: new Date().getTime(), //genera un id unico
             title: TitleTodo,
             description: DescriptionTodo,
-            tag: TagTodo,
+            tag: TagTodoList,
         }
-        setTodos([...todos, newTodo])
-        localStorage.setItem('todosLocal', JSON.stringify([...todos, newTodo]))
+        dispatch({
+            type: ADD_TODO,
+            payload: newTodo
+        })
         //SETEO DE LOS INPUTS
         setTitleTodo('')
         setDescriptionTodo('')
         setTagTodo('')
+        setTagTodoList([])
+    }
+
+    const onReset = () => {
+        setTitleTodo('')
+        setDescriptionTodo('')
+        setTagTodo('')
+        setTagTodoList([])
+    }
+
+    const addTag = () => {
+        const newTag = {
+            titleTag: TagTodo,
+            colorTag: TagColor,
+        }
+        setTagTodoList([...TagTodoList, newTag ])
+        setTagTodo('')
+
     }
 
   return (
-    <div>
-        <form onSubmit={(e) => onSubmit(e)} className="form__container">
+    <div className='d-flex justify-content-center align-items-center'>
+        
+        <form onSubmit={e => onSubmit(e)} className='container' >
+        <div className='row m-auto' >
 
-            <div className="form__container-items">
-            <label htmlFor="TitleTodo" className='input__title'>Titulo
-                <input type="text" id="TitleTodo" placeholder="Titulo TODO" onChange={e => setTitleTodo(e.target.value)} />
-            </label>
+            <div className='text-center col-12'>
+                <h1 className='text-light'>Crear To-Do</h1>
+            </div>
+            <div className='col-12 col-lg-6 d-flex justify-content-center align-items-center flex-column'>
+                <label className='text-light mx-2 d-flex justify-content-start w-100'> Titulo </label>
+                <input placeholder="Title" value={TitleTodo}  className="form-control mx-2" onChange={e => setTitleTodo(e.target.value)}/>
+      
+            </div>
 
-            <label htmlFor="TagTodo" className='input__tag'>Tags
-                <input type="text" id="TagTodo" placeholder="Tag TODO" onChange={e => setTagTodo(e.target.value)} />
-                <button type='text'>
-                    Agregar Tag
-                </button>
-            </label>
+            <div className='col-12 col-lg-6 d-flex justify-content-center align-items-center flex-column '>
+                <label className='text-light mx-2 d-flex justify-content-start w-100'> Tag </label>
+                <div className=" mx-2 text-center justify-content-center align-items-center d-flex bg-light form-control">
+                    <input value={TagTodo} placeholder="Tag"  className="mx-2 form-control" onChange={e => setTagTodo(e.target.value)} />
+                    <input type="color" placeholder="Color"  className="mx-2 form-control" onChange={e => setTagColor(e.target.value)}/>
+                </div>
+            
+                <p className="form-control btn btn-info" onClick={addTag}>Agregar Tag</p>
 
-            <label htmlFor="DescriptionTodo" className='input__description'>Description
-                <textarea type="text" id="DescriptionTodo" placeholder="Description TODO" rows={5} cols={20} onChange={e => setDescriptionTodo(e.target.value)} />
-            </label>
+                <div className='container'>
+                    <div className='row'>
+                    { TagTodoList.map((tag, index) => (
+                        <Tag  tag={tag} key={index} index={index} />
+                    ))}
+                    </div>
+                </div>
+            </div>
 
-            <div className='form__button'>
-                <button type="submit" disabled={ (TagTodo && TitleTodo && DescriptionTodo) === '' ? true : false}>
+            <div className='col-12 my-2 d-flex justify-content-center align-items-center flex-column'>
+                <label className='text-light mx-2 d-flex justify-content-start w-100'> Description </label>
+                <textarea value={DescriptionTodo} placeholder="Description" className="form-control mx-2" onChange={e => setDescriptionTodo(e.target.value)}/>
+            </div>
+
+            <div className='d-flex justify-content-center align-items-center my-4'>
+                <button className='btn btn-success mx-2' type="submit" >
                     Crear
                 </button>
-                <button type="reset">
+                <button className='btn btn-danger mx-2'  onClick={onReset} >
                     Resetear
                 </button>
             </div>
-            </div>
+        </div>
         </form>
+        
     </div>
   )
 }

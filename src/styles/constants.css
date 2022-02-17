@@ -1,18 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inconsolata:wght@900&family=Lobster&family=Noto+Serif:ital,wght@0,400;0,700;1,700&family=Roboto:ital,wght@0,300;1,700;1,900&display=swap');
 
 :root{
-    --Fondo: #120907;
-    --FondoSecond: #12283c;
-    --Ocean: #146088;
+    
     --OceanLight: #80d3f663;
-    --WhiteText: #fff;
 }
-
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-size: 62,5%;
+    
 }
 
 body{
@@ -20,4 +17,5 @@ body{
     background-repeat: repeat;
     background-position: center;
     background-size: cover;
+    background-attachment: fixed;
 }

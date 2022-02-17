@@ -1,11 +1,18 @@
-//STYLES
+//Components
+import {Navbar} from './Navbar'
+
+//Styles
 import '../styles/header.css'
+
 export const Header = () => {
   return (
-    <div className='header__container'>
-      <h1>
+    <header className='container-fluid pt-3 header__container mb-4'>
+      <div className='row text-center'>
+      <h1 className="text-light fs-1">
         TodoList
       </h1>
-    </div>
+      <Navbar/>
+      </div>
+    </header>
   )
 }

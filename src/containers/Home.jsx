@@ -1,28 +1,41 @@
-//STYLE
-import '../styles/home.css';
+import React, { useContext, useEffect} from 'react';
+import { AppContext } from '../context/AppProvider';
+
 //COMPONENTS
 import { FormTodos } from "../components/FormTodos";
-import { BoxTodos } from "../components/BoxTodos";
-import { BoxDone } from "../components/BoxDone";
+import { Footer } from "../components/Footer";
+import { Loading } from "../components/Loading";
 
-export const Home = ({setTodos, setTodosDone, todosDone, todos}) => {
+
+export const Home = () => {
+
+  const { state, dispatch } = useContext(AppContext);
+
+  useEffect(() => {
+    dispatch({
+      type: 'LOADING',
+      payload: true
+    })
+
+    setTimeout(() => {
+      dispatch({
+        type: 'LOADING',
+        payload: false
+      })
+    } , 2000);
+  } , [])
+
   return (
-    <div className='home__container'>
-        <FormTodos todos={todos} setTodos={setTodos} className="home__form"/>
-        <BoxTodos
-        todos={todos}
-        setTodos={setTodos}
-        todosDone={todosDone}
-        setTodosDone={setTodosDone}
-        className="home__boxtodos"
-        />
-        <BoxDone
-        todos={todos}
-        setTodos={setTodos}
-        todosDone={todosDone}
-        setTodosDone={setTodosDone}
-        className="home__boxdone"
-        />
-    </div>
+    <>
+    {
+      state.flag ? <Loading /> :
+      (
+      <>
+        <FormTodos />
+        <Footer/>
+      </>
+      )
+    }
+    </>
   )
 }
