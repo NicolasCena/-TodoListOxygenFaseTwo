@@ -92,7 +92,7 @@ export const FormTodos = () => {
             </div>
 
             <div className='d-flex justify-content-center align-items-center my-4'>
-                <button className='btn btn-success mx-2' type="submit" >
+                <button className='btn btn-success mx-2' type="submit" disabled={((DescriptionTodo && TitleTodo) === "") ? true : false} >
                     Crear
                 </button>
                 <button className='btn btn-danger mx-2'  onClick={onReset} >
